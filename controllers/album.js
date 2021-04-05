@@ -12,6 +12,10 @@ exports.addImage = (req, res, next) => {
   const image = req.body.image;
   const like=req.body.like;
   const i={id, image, like};
+  if (!image) {
+    res.status(200).end();
+  }
+  else{
   fs.readFile( __dirname + "/" + "users.json", 'utf8', function (err, data) {
     var img=JSON.parse(data);
     // console.log(img);
@@ -24,6 +28,7 @@ exports.addImage = (req, res, next) => {
   });
   res.status(200).end(data);
   })
+}
 };
 
 exports.deleteImage = (req, res, next) => {
@@ -62,6 +67,10 @@ fs.readFile( __dirname + "/" + "users.json", 'utf8', function (err, data) {
 exports.updateImage = (req, res, next) => {
   const id=req.body.id;
   const updatedImage=req.body.image;
+  if (!updatedImage) {
+    res.status(200).end();
+  }
+else{
   fs.readFile( __dirname + "/" + "users.json", 'utf8', function (err, data) {
     var img=JSON.parse(data);
       var updImages= img.map(t => t.id == id? {...t,image:updatedImage} : t
@@ -73,4 +82,4 @@ exports.updateImage = (req, res, next) => {
     res.status(200).end();
 });
 }
-
+}
