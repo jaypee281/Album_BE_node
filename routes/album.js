@@ -1,20 +1,20 @@
 const express = require('express');
 
-const albumController = require('../controllers/album');
+const {getImages,addImage,updateImage,likeImage,deleteImage} = require('../controllers/album');
 
 const router = express.Router();
 
-// GET /album/images
-router.get('/images', albumController.getImages);
+// GET /album
+router.get('/', getImages);
 
-// POST /album/images
-router.post('/images/add', albumController.addImage);
+// POST /album/add
+router.post('/add', addImage);
 
+// POST /album/update
+router.post('/update', updateImage);
+//PATCH /album/:id
+router.post('/:id', likeImage);
 
-router.post('/images/update', albumController.updateImage);
-//PATCH /album/images/:id
-router.post('/images/:id', albumController.likeImage);
-
-//DELETE /album/images/:id
-router.delete('/images/:id', albumController.deleteImage);
+//DELETE /album/:id
+router.delete('/:id', deleteImage);
 module.exports = router;

@@ -1,42 +1,40 @@
-var fs = require("fs");
+let fs = require("fs");
 // const Image=require("../model/Image")
-exports.getImages = (req, res, next) => {
-  fs.readFile( __dirname + "/" + "users.json", 'utf8', function (err, data) {
-    console.log( data );
+exports.getImages = (req, res) => {
+  fs.readFile( __dirname + "/" + "users.json", 'utf8', (err, data) =>{
+    if (err) console.log(err);
     res.status(200).end( data );
  });
 };
-
-exports.addImage = (req, res, next) => {
+/*Adding images */
+exports.addImage = (req, res) => {
   const id = req.body.id;
   const image = req.body.image;
   const like=req.body.like;
   const i={id, image, like};
   if (!image) {
-    res.status(200).end();
+    res.status(304).end();
   }
   else{
-  fs.readFile( __dirname + "/" + "users.json", 'utf8', function (err, data) {
-    var img=JSON.parse(data);
-    // console.log(img);
-    // console.log(x);
-    // console.log(i);
+  fs.readFile( __dirname + "/" + "users.json", 'utf8', (err, data)=> {
+    if (err) console.log(err);
+    let img=JSON.parse(data);
     img.push(i);
-    console.log(img);
   fs.writeFile( __dirname + "/" + "users.json", JSON.stringify(img), err => {
     console.log(err);
   });
-  res.status(200).end(data);
+  res.status(201).end(data);
   })
 }
 };
 
-exports.deleteImage = (req, res, next) => {
+/*Deleting images */
+exports.deleteImage = (req, res) => {
   const urlId = req.params.id;
-  fs.readFile( __dirname + "/" + "users.json", 'utf8', function (err, data) {
-    var img=JSON.parse(data);
+  fs.readFile( __dirname + "/" + "users.json", 'utf8',(err, data) =>{
+    if (err) console.log(err);
+    let img=JSON.parse(data);
     const filteredImages = img.filter((t) => t.id != urlId);
-    console.log(filteredImages);
     fs.writeFile( __dirname + "/" + "users.json", JSON.stringify(filteredImages),'utf8', err => {
       console.log(err);
     });
@@ -45,35 +43,37 @@ exports.deleteImage = (req, res, next) => {
 };
 
 
-
-exports.likeImage = (req, res, next) => {
+/*Liking images */
+exports.likeImage = (req, res) => {
   const urlId=req.params.id;
-  fs.readFile( __dirname + "/" + "users.json", 'utf8', function (err, data) {
-    var img=JSON.parse(data);
-      var updImages= img.map(t => t.id == urlId? {...t,like:!t.like,} : t
+  fs.readFile( __dirname + "/" + "users.json", 'utf8',(err, data)=> {
+    if (err) console.log(err);
+    let img=JSON.parse(data);
+      let updImages= img.map(t => t.id == urlId? {...t,like:!t.like,} : t
     );
     console.log(updImages);
     fs.writeFile( __dirname + "/" + "users.json", JSON.stringify(updImages),'utf8', err => {
       console.log(err);
     });
 });
-fs.readFile( __dirname + "/" + "users.json", 'utf8', function (err, data) {
-  console.log( data );
+fs.readFile( __dirname + "/" + "users.json", 'utf8', (err, data)=> {
+  if (err) console.log(err);
   res.status(200).end( data );
 });
 }
 
-
-exports.updateImage = (req, res, next) => {
+/*Updating images */
+exports.updateImage = (req, res) => {
   const id=req.body.id;
   const updatedImage=req.body.image;
   if (!updatedImage) {
-    res.status(200).end();
+    res.status(304).end();
   }
 else{
-  fs.readFile( __dirname + "/" + "users.json", 'utf8', function (err, data) {
-    var img=JSON.parse(data);
-      var updImages= img.map(t => t.id == id? {...t,image:updatedImage} : t
+  fs.readFile( __dirname + "/" + "users.json", 'utf8', (err, data)=> {
+    if (err) console.log(err);
+    let img=JSON.parse(data);
+      let updImages= img.map(t => t.id == id? {...t,image:updatedImage} : t
     );
     console.log(updImages);
     fs.writeFile( __dirname + "/" + "users.json", JSON.stringify(updImages),'utf8', err => {

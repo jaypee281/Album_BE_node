@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-var fs = require("fs");
+let fs = require("fs");
 const errorController = require('./controllers/error');
 const albumRoutes = require('./routes/album');
 
@@ -15,6 +15,13 @@ res.setHeader("Access-Control-Allow-Methods","GET,POST,DELETE");
 res.setHeader("Access-Control-Allow-Headers","Content-Type,Authorisation");
 next();
 });
+
 app.use('/album', albumRoutes);
+
 app.use(errorController.get404);
-app.listen(8080);
+
+app.listen(8080,err=>{
+    if (err) console.log(err);
+    console.log("Server listening on PORT", 8080);
+
+});
